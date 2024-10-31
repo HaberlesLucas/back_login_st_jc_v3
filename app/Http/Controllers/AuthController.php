@@ -18,6 +18,7 @@ class AuthController extends BaseController
     public function setUsuario(UsuarioRequest $usuarioRequest)
     {
         $data = $usuarioRequest->validated();
+        //dd($data);
         $roles = $data['roles'];
         unset($data['roles']);
         $data['password'] = bcrypt($data['password']);

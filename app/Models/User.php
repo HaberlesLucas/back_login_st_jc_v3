@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'apellido_nombre',
         'estado',
         'password',
+        'correo',
     ];
 
     protected $hidden = [
@@ -46,6 +47,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
+    //para mostrar nobmre en el navbar
     public function getJWTCustomClaims()
     {
         return [

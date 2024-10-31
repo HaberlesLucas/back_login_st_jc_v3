@@ -34,6 +34,8 @@ class UsuarioRequest extends FormRequest
             'apellido_nombre'   => 'required|string',
             'password'          => 'required|string',
             'c_password'        => 'required|same:password',
+            'correo'            => 'required|string',      //nuevo para correo
+            'c_correo'          => 'required|same:correo', //nuevo para correo
             'estado'            => 'boolean',
             'roles'             => 'required|array',
         ];

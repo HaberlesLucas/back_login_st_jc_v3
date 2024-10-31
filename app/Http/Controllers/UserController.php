@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UsuarioNameUpdate;
+use App\Http\Requests\UsuarioPasswordReset;
+use App\Http\Requests\UsuarioPasswordSaveReset;
 use App\Http\Requests\UsuarioPasswordUpdate;
 use Exception;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UsuarioRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Mail\PasswordResetMail;
+
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
@@ -52,9 +59,11 @@ class UserController extends Controller
 
     public function checkDniExists($dni)
     {
-        //$exists = User::where('dni', $dni)->exists(); //retorna false o true
-        // return response()->json(['exists' => $exists]); //asignar la el 'valor' del metodo exists() a la respuesta
         $exists = User::withTrashed()->where('dni', $dni)->exists();
+        return response()->json(['exists' => $exists]);
+    }
+    public function checkCorreoExists($correo){
+        $exists = User::withTrashed()->where('correo', $correo)->exists();
         return response()->json(['exists' => $exists]);
     }
 
@@ -149,6 +158,81 @@ class UserController extends Controller
         $user->password = Hash::make($usuarioPasswordUpdate->new_password);
         $user->save();
 
+        return response()->json(['message' => 'Contraseña actualizada correctamente.'], 200);
+    }
+
+    public function resetPassword(UsuarioPasswordReset $request)
+    {
+        try {
+            $correo = $request->input('correo');
+            $user = User::where('correo', $correo)->firstOrFail();
+            $token = Str::random(60);
+            DB::table('password_resets')->updateOrInsert(
+                ['email' => $correo],
+                ['token' => $token, 'created_at' => now()]
+            );
+            //Mail::to($correo)->send(new PasswordResetMail($token));
+            //DEBERÍA USAR API_FRONT .ENV ?
+            $frontendUrl = "http://localhost:5173/reset-password/$token";
+            Mail::to($correo)->send(new PasswordResetMail($frontendUrl));
+
+
+
+            return response()->json(['message' => 'Se ha enviado un enlace de restablecimiento a su correo'], 200);
+        } catch (Exception $exception) {
+            return response()->json(['message' => 'No se encontró ningún usuario con este correo', 'error' => $exception->getMessage()], 404);
+        }
+    }
+
+    public function showResetForm($token)
+    {
+        $passwordReset = DB::table('password_resets')->where('token', $token)->first();
+        if (!$passwordReset || Carbon::parse($passwordReset->created_at)->addMinutes(60)->isPast()) {
+            return response()->json(['message' => 'Token inválido o expirado.'], 404);
+        }
+        return response()->json(['message' => 'Token válido.'], 200);
+    }
+
+    // public function updatePasswordReset(UsuarioPasswordSaveReset $request)
+    // {
+    //     $passwordReset = DB::table('password_resets')
+    //         ->where('token', $request->token)
+    //         ->where('email', $request->correo)
+    //         ->first();
+
+    //     if (!$passwordReset) {
+    //         return response()->json(['message' => 'Token o correo inválido.'], 404);
+    //     }
+    //     $user = User::where('correo', $request->correo)->first();
+
+    //     if (!$user) {
+    //         return response()->json(['message' => 'Usuario no encontrado.'], 404);
+    //     }
+
+    //     $user->password = Hash::make($request->password);
+    //     $user->save();
+
+    //     DB::table('password_resets')->where('email', $request->correo)->delete();
+
+    //     return response()->json(['message' => 'Contraseña actualizada correctamente.'], 200);
+    // }
+
+    public function updatePasswordReset(UsuarioPasswordSaveReset $request)
+    {
+        $passwordReset = DB::table('password_resets')
+            ->where('token', $request->token)
+            ->first();
+
+        if (!$passwordReset) {
+            return response()->json(['message' => 'Token inválido.'], 404);
+        }
+        $user = User::where('correo', $passwordReset->email)->first();
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+        }
+        $user->password = Hash::make($request->password);
+        $user->save();
+        DB::table('password_resets')->where('email', $passwordReset->email)->delete();
         return response()->json(['message' => 'Contraseña actualizada correctamente.'], 200);
     }
 }

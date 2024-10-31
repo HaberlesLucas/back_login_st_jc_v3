@@ -15,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->web(append: [
+            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
@@ -23,6 +25,14 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json([
                     'message' => $e->getMessage(),
                 ], 401);
+            }
+        });
+        $exceptions->render(function (Exception $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    
+                    'error' => $e->getMessage(),
+                ], 500);
             }
         });
     })->create();
