@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\PasswordResetMail;
-
+use Illuminate\Support\Facades\Config;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
@@ -62,7 +62,8 @@ class UserController extends Controller
         $exists = User::withTrashed()->where('dni', $dni)->exists();
         return response()->json(['exists' => $exists]);
     }
-    public function checkCorreoExists($correo){
+    public function checkCorreoExists($correo)
+    {
         $exists = User::withTrashed()->where('correo', $correo)->exists();
         return response()->json(['exists' => $exists]);
     }
@@ -80,8 +81,9 @@ class UserController extends Controller
         return response()->json($usuario->load('roles'), 200);
     }
 
-    public function deleteUsuario($dni)
-    {
+    //SI SE DESEA IMPLEMENTAR BAJAS LÓGICAS SOLO LLAMAR A ESTE METODO EN LUGAR DE .DELETEUSUARIO($DNI)
+    public function bajaLogica($dni)
+    {   
         try {
             $usuario = User::findOrFail($dni);
 
@@ -90,6 +92,22 @@ class UserController extends Controller
 
             $usuario->roles()->detach();
             $usuario->delete();
+
+            return response()->json(null, 204);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Usuario no encontrado.'], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error al eliminar el usuario: ' . $e->getMessage()], 500);
+        }
+    }
+    
+    public function deleteUsuario($dni)
+    {
+        try {
+            $usuario = User::findOrFail($dni);
+
+            $usuario->roles()->detach();
+            $usuario->forceDelete();
 
             return response()->json(null, 204);
         } catch (ModelNotFoundException $e) {
@@ -173,7 +191,8 @@ class UserController extends Controller
             );
             //Mail::to($correo)->send(new PasswordResetMail($token));
             //DEBERÍA USAR API_FRONT .ENV ?
-            $frontendUrl = "http://localhost:5173/reset-password/$token";
+            // $frontendUrl = "http://localhost:5173/reset-password/$token";
+            $frontendUrl = Config::get('app.frontend_url') . "/reset-password/$token";
             Mail::to($correo)->send(new PasswordResetMail($frontendUrl));
 
 
@@ -224,7 +243,7 @@ class UserController extends Controller
             ->first();
 
         if (!$passwordReset) {
-            return response()->json(['message' => 'Token inválido.'], 404);
+            return response()->json(['message' => 'Token inválido. Solicite restablecer su contraseña nuevamente'], 404);
         }
         $user = User::where('correo', $passwordReset->email)->first();
         if (!$user) {

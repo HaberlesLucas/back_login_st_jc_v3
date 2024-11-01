@@ -13,9 +13,6 @@ class UsuarioPasswordSaveReset extends FormRequest
 
     public function rules(): array
     {
-
-
-
         $rules = [
             'token' => 'required',
             // 'correo' => 'required|email|exists:users,correo',
