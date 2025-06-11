@@ -13,8 +13,8 @@ class RolSeeder extends Seeder
     {
         //
         DB::table('rols')->insert([
-            ['id_rol' => 1, 'nombre' => 'Admin Stream-Tech'],
-            ['id_rol' => 2, 'nombre' => 'Admin JComplements'],
+            ['id_rol' => 1, 'nombre' => 'Admin tipo 1'],
+            ['id_rol' => 2, 'nombre' => 'Admin tipo 2'],
         ]);
     }
 }

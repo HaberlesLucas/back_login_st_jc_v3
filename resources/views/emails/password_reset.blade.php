@@ -1,78 +1,99 @@
-{{-- <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecimiento de Contraseña</title>
-</head>
-<body>
-    <p>Hola,</p>
-    <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta. Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-    <p><a href="{{ $resetUrl }}">Restablecer Contraseña</a></p>
-    <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
-    <p>Saludos,<br>Tu equipo de soporte</p>
-</body>
-</html> --}}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restablecimiento de Contraseña</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            max-width: 400px;
-            text-align: center;
-        }
-        .header-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px 8px 0 0;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            color: #ffffff;
-            background-color: #7ee963;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-        .btn:hover {
-            background-color: #5c5454;
-            color: white
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        {{-- <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDEwfHxjb21wdXRlciUyMHNjcmVlbnxlbnwwfHx8fDE2OTYzMDQ1OTg&ixlib=rb-4.0.3&q=80&w=400" alt="Pantalla de Computadora" class="header-image"> --}}
-
-        <p>Hola,</p>
-        <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta. Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-        {{-- <a href="{{ $resetUrl }}">Restablecer Contraseña</a> --}}
-        <a href="{{ $url }}" class="btn">Restablecer Contraseña</a>
-
-        <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
-        <p>Saludos,<br>Soporte <b>Stream Tech</b></p>
-    </div>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f7f7f7; color: #333333; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+    <!-- Contenedor principal -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                    <!-- Cabecera -->
+                    <tr>
+                        <td align="center" bgcolor="#2d2d2d" style="padding: 20px;">
+                            <!-- Logo -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding-bottom: 10px;">
+                                        <img src="https://www.vortixs.com/img/logo.webp" alt="Vortixs Logo" width="150" style="display: block;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; margin-top: 15px;">Restablecimiento de Contraseña</h1>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Contenido -->
+                    <tr>
+                        <td align="center" style="padding: 30px 40px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 20px; text-align: center;">
+                                        <p style="margin: 0; line-height: 1.6; font-size: 16px;">Hola,</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 20px; text-align: center;">
+                                        <p style="margin: 0; line-height: 1.6; font-size: 16px;">Recibimos una solicitud para restablecer la contraseña de tu cuenta. Para continuar con este proceso, haz clic en el siguiente botón:</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding: 20px 0;">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td align="center" bgcolor="#c62e8a" style="border-radius: 4px;">
+                                                    <a href="{{ $url }}" target="_blank" style="display: inline-block; padding: 12px 30px; font-size: 16px; color: #ffffff; text-decoration: none; font-weight: 600;">Restablecer Contraseña</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 20px; text-align: center;">
+                                        <p style="margin: 0; line-height: 1.6; font-size: 16px;">Si no solicitaste este cambio, puedes ignorar este correo y tu contraseña seguirá siendo la misma.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 20px 0; border-top: 1px solid #eeeeee; border-bottom: 1px solid #eeeeee; text-align: center;">
+                                        <p style="margin: 0; line-height: 1.6; font-size: 14px; color: #666666;">Por razones de seguridad, este enlace expirará en 24 horas.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Pie de página -->
+                    <tr>
+                        <td align="center" bgcolor="#f9f9f9" style="padding: 20px; border-top: 1px solid #eeeeee;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding-bottom: 5px;">
+                                        <p style="margin: 0; color: #666666; font-size: 14px;">Saludos,</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding-bottom: 15px;">
+                                        <p style="margin: 0; color: #666666; font-size: 14px;">Soporte <span style="font-weight: bold; color: #c62e8a;">Vortixs</span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <p style="margin: 0; color: #666666; font-size: 12px;">© 2025 Vortixs. Todos los derechos reservados.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

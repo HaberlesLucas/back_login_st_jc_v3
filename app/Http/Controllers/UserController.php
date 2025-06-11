@@ -83,7 +83,7 @@ class UserController extends Controller
 
     //SI SE DESEA IMPLEMENTAR BAJAS LÓGICAS SOLO LLAMAR A ESTE METODO EN LUGAR DE .DELETEUSUARIO($DNI)
     public function bajaLogica($dni)
-    {   
+    {
         try {
             $usuario = User::findOrFail($dni);
 
@@ -100,7 +100,7 @@ class UserController extends Controller
             return response()->json(['error' => 'Ocurrió un error al eliminar el usuario: ' . $e->getMessage()], 500);
         }
     }
-    
+
     public function deleteUsuario($dni)
     {
         try {
