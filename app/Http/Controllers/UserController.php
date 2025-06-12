@@ -109,7 +109,7 @@ class UserController extends Controller
             $usuario->roles()->detach();
             $usuario->forceDelete();
 
-            return response()->json(null, 204);
+            return response()->json(['message' => 'Usuario borrado permanentemente.'], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Usuario no encontrado.'], 404);
         } catch (Exception $e) {

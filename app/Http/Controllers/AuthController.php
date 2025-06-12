@@ -99,8 +99,11 @@ class AuthController extends BaseController
 
     public function logout()
     {
-        // $success = auth()->logout();
-        $success = JWTAuth::logout();
-        return $this->sendResponse($success, 'sesión cerrada correctamente');
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken()); //fin dee la sesión invalidando el token
+            return $this->sendResponse([], 'Sesión cerrada correctamente');
+        } catch (\Exception $e) {
+            return $this->sendError('Error al cerrar sesión', 500);
+        }
     }
 }

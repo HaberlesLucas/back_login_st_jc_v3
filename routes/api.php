@@ -22,8 +22,9 @@ Route::group([
         Route::POST('/register', [AuthController::class, 'setUsuario']);
 
         Route::POST('/logout', [AuthController::class, 'logout']);
-        Route::POST('/refresh', [AuthController::class, 'refresh']);
-
+        //Route::POST('/refresh', [AuthController::class, 'refresh']);
+        Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('jwt.refresh');
+        
         Route::PUT('/update-user-name', [UserController::class, 'updateName']);
         Route::PUT('/update-user-password', [UserController::class, 'updatePassword']);
 
